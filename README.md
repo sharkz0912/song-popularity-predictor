@@ -1,4 +1,4 @@
-# Predicting Artist Song Popularity using Machine Learning (Phase 1)
+# Predicting Artist Song Popularity using Machine Learning (Phase 0)
 
 ## Project Overview
 
