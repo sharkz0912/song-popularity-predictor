@@ -64,7 +64,7 @@ This project follows a **modular architecture** to ensure scalability, maintaina
 
 ### 4.2 System Architecture Diagram
 
-*(Diagram)*
+![System Architecture Diagram](https://github.com/sharkz0912/song-popularity-predictor/blob/main/System%20Design%20Diagram.png)
 
 ---
 
