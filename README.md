@@ -1,70 +1,110 @@
-# Predicting Artist Song Popularity using Machine Learning (Phase 0)
+# Predicting Artist Song Popularity using Machine Learning (Design Phase)
 
-## Project Overview
+## Table of Contents
+1. [Project Overview](#1-project-overview)
+2. [Problem Statement](#2-problem-statement)
+3. [Value Proposition](#3-value-proposition)
+4. [System Design](#4-system-design)
+   - [Architecture Overview](#41-architecture-overview)
+   - [System Architecture Diagram](#42-system-architecture-diagram)
+5. [Software Development Lifecycle (SDLC)](#5-software-development-lifecycle-sdlc)
+   - [Strategy Phase](#51-strategy-phase)
+   - [Design Phase](#52-design-phase)
+   - [Development Phase](#53-development-phase)
+   - [Testing Phase](#54-testing-phase)
+   - [Deployment Phase](#55-deployment-phase)
+   - [Maintenance Phase](#56-maintenance-phase)
+6. [Getting Started](#6-getting-started)
+7. [Future Work](#7-future-work)
 
-The goal of this project is to predict the popularity of major artists like The Weeknd's songs using machine learning. By analyzing musical features like tempo, energy, and danceability from Spotify and external factors like social media mentions, the model can predict how popular a song might become. The solution has potential applications in music marketing, playlist curation, and artist promotion.
 
-## Problem Statement
+## 1. Project Overview
 
-In a competitive digital music landscape, artists, record labels, and streaming platforms need data-driven insights to understand which songs will resonate with audiences. Predicting song popularity before or soon after release can help optimize marketing campaigns, playlist placements, and promotion strategies. Most traditional approaches rely on historical trends or subjective factors, often unable to maximize a song's potential.
+This project aims to predict the popularity of songs by major artists, such as The Weeknd, using **machine learning**. By analyzing **musical features** from the **Spotify API** and incorporating **external factors** like **social media mentions** from **Meta Graph API** and **Google Trends**, the model can forecast how popular a song might become. This model has potential applications in **music marketing**, **playlist curation**, and **artist promotion**, providing a data-driven way to optimize these strategies.
 
-This project addresses the problem by providing a predictive model for song popularity, enabling stakeholders to make informed decisions earlier in the release cycle.
+---
 
-## Value Proposition
+## 2. Problem Statement
 
-The value of this project lies in its potential to:
+In the digital music landscape, the ability to **predict song popularity** before or soon after release is vital for artists, record labels, and streaming platforms. Most existing methods rely on **historical trends** or subjective judgment, which can limit the ability to maximize a song’s potential. Early-stage popularity prediction can help stakeholders make **informed decisions** about **marketing**, **promotion**, and **distribution strategies** to increase user engagement and revenue. 
 
-- **Improve Music Marketing**: Artists and labels can use predictive insights to allocate promotional efforts toward songs with higher hit potential.
-- **Enhance Playlist Curation**: Streaming platforms can improve their playlist recommendations by prioritizing songs predicted to perform well.
-- **Boost Engagement and Revenue**: With early insights into a song's popularity, platforms can better target their audience, leading to increased engagement and revenue.
+This project addresses the **gap in early-stage predictive analytics** by developing a **data-driven model** that forecasts a song's success using both **musical characteristics** and **external engagement metrics** like social media. 
 
-## Technical Overview
+---
 
-The project uses a data-driven approach to predict song popularity through the following steps:
+## 3. Value Proposition
 
-1. **Data Collection**:
-   - **Spotify API**: Collect features such as tempo, energy, danceability, and popularity scores.
-   - **External Sources**: Gather social media mentions via the Twitter API and Google Trends to capture external song engagement.
+The **key value** this project offers is its ability to provide **real-time, predictive insights** into song popularity, helping artists and platforms make **proactive** and **strategic decisions**. 
 
-2. **Data Preprocessing and Feature Engineering**:
-   - Clean and preprocess data from Spotify and external sources.
-   - Engineer additional features like time-based trends, sentiment analysis of lyrics, and artist popularity metrics.
+- **For Artists and Record Labels**: Predict which songs are more likely to become hits, optimizing marketing campaigns and promotional efforts around high-potential tracks.
+- **For Streaming Platforms**: Enhance **playlist curation** by including songs predicted to perform well, improving user engagement and experience.
+- **For Marketing Teams**: Identify **trending songs** early to capitalize on viral trends, resulting in improved targeting for ads and promotions.
+- **For Listeners**: Personalize recommendations by prioritizing potential hits, improving discovery and user satisfaction on music streaming platforms like **Spotify** and **Apple Music**.
 
-3. **Model Building**:
-   - Train and test multiple machine learning models like Linear Regression, Random Forest, XGBoost to predict the song’s popularity score.
-   - Evaluate models using metrics such as RMSE, MAE, and R-squared to identify most accurate model.
+---
 
-4. **Deployment**:
-   - Deploy the model as a web app hosted on AWS for user-friendly way to interact with and showcase the model.
+## 4. System Design
 
-5. **Maintenance**:
-   - Set up automated retraining pipelines to improve the model as new data becomes available.
-   - Implement monitoring to track prediction performance over time.
+### 4.1 Architecture Overview
+This project follows a **modular architecture** to ensure scalability, maintainability, and ease of deployment. The system consists of the following components:
 
-## Roadmap
-
-1. **Phase 1: Data Collection**: 
-   - Integrate Spotify API and external sources for data collection.
+1. **Data Collection Layer**: Integrates with the **Spotify API**, **Meta Graph API**, and **Google Trends API** to collect both **musical features** and **social media engagement data**. Data is collected, cleaned, and stored in a **PostgreSQL** database.
    
-2. **Phase 2: Feature Engineering and EDA**:
-   - Analyze relationships between features and popularity.
-   - Create derived features like sentiment analysis of song lyrics.
+2. **Preprocessing Layer**: Processes and transforms the raw data, applying **data cleaning**, **normalization**, and **feature engineering**.
+   
+3. **Modeling Layer**: Multiple **machine learning models** are trained, evaluated using **cross-validation**, and optimized. Experiment tracking using **MLflow** and **hyperparameter tuning** are performed to ensure the best model is selected and deployed for real-time predictions, with continuous monitoring for performance and drift detection.
+   
+4. **API Layer**: A **RESTful API** built using **FastAPI** allows external applications to access the model for predictions. The API communicates with the trained model and serves the prediction results to the frontend.
 
-3. **Phase 3: Model Building and Evaluation**:
-   - Train multiple models, tune hyperparameters, and evaluate their performance.
+5. **Frontend (Web Application)**: A **React** frontend allows users to input song details and visualize the predicted popularity score along with insights such as feature importance.
 
-4. **Phase 4: Deployment**:
-   - Build and deploy an API hosted on AWS for real-time song popularity predictions.
+6. **Deployment Layer**: The entire system is deployed on **Heroku** for hosting the API and web app, with model artifacts stored in **PostgreSQL**. A continuous integration and deployment pipeline is established using **GitHub Actions** to automate testing and deployment of the web app and API. 
 
-5. **Phase 5: Continuous Improvement**:
-   - Automate data collection and retraining processes.
-   - Implement monitoring and alerting for prediction accuracy and model drift.
+7. **Monitoring and Maintenance**: Continuous monitoring using **New Relic** for tracking API performance, response times, and error rates. **Prometheus** with **Grafana** is used to monitor machine learning model performance and detect model drift. **Sentry** is integrated for real-time logging and error tracking across both the FastAPI backend and React frontend. Model retraining is triggered automatically based on performance drops or data drift, using **Heroku Scheduler** for managing the retraining pipeline.
 
-## Getting Started
+### 4.2 System Architecture Diagram
 
-To set up the project, follow these steps:
+*(Diagram)*
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/sharkz0912/song-popularity-predictor.git
-   cd song-popularity-predictor
+---
+
+## 5. Software Development Lifecycle (SDLC)
+
+This project follows a complete **software development lifecycle (SDLC)** to ensure that all phases from planning to deployment and maintenance are systematically executed for a robust and scalable solution.
+
+### **5.1 Strategy Phase**
+- **Objective**: Build a machine learning model to predict song popularity, leveraging both musical features and external engagement metrics.
+- **Success Metrics**: Measure model performance using **RMSE, MAE**, and **R-squared**, with success defined by delivering actionable insights for stakeholders in the music industry.
+
+### **5.2 Design Phase**
+- **System Design**: A **modular architecture** (as detailed in section 4.1) is employed, ensuring scalability, maintainability, and efficient data handling.
+- **Data Flow Planning**: The design ensures that data is efficiently collected, processed, and flows through the system from APIs to model training, all the way to user-facing predictions via the frontend.
+
+### **5.3 Development Phase**
+- **Data Collection**: Integrated with **Spotify API**, **Meta Graph API**, and **Google Trends API** to gather song features and engagement data.
+- **Feature Engineering**: Key features like **sentiment analysis** and **time-based trends** are engineered to improve model performance.
+- **Model Building**: Multiple models (e.g., **XGBoost**, **Random Forest**) are trained and tuned, with **MLflow** used for tracking experiments and hyperparameter tuning.
+- **Frontend Development**: Built a **React web app** to allow users to input song details and view real-time popularity predictions.
+
+### **5.4 Testing Phase**
+- **Unit Testing**: Used **pytest** for testing the data collection, preprocessing, and API layers to ensure system robustness.
+- **Model Validation**: Validated the model using **cross-validation** techniques to ensure generalizability to unseen data.
+- **User Acceptance Testing (UAT)**: Tested the web application with end users or simulated environments to ensure functionality and user satisfaction.
+
+### **5.5 Deployment Phase**
+- **CI/CD Pipeline**: Implemented a **CI/CD pipeline** using **GitHub Actions** to automate testing, integration, and deployment of the FastAPI and React frontend components.
+- **Deployment**: Deployed the entire system (API and frontend) on **Heroku**, ensuring seamless deployment and scalability.
+
+### **5.6 Maintenance Phase**
+- **Model Retraining**: Set up an automated pipeline to retrain the machine learning model as new data becomes available.
+- **Monitoring**: Integrated tools like **Prometheus/Grafana**, **Sentry**, and **New Relic** to monitor API performance, detect model drift, and track user activity. This ensures continuous system reliability and responsiveness.
+
+---
+
+## 6. Getting Started
+
+---
+
+## 7. Future Work
+
+---
